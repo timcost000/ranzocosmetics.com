@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ranzo Cosmetics — Beleza com Propósito</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep:   #1E4D35;
+    --green-mid:    #2E6B4F;
+    --green-light:  #4A8C68;
+    --green-pale:   #EAF2ED;
+    --gold:         #B8963E;
+    --gold-light:   #D4AF6A;
+    --gold-pale:    #F5EDD8;
+    --white:        #FAFAF7;
+    --off-white:    #F3F0EA;
+    --dark:         #141A14;
+    --gray:         #6B7A6B;
+    --serif:        'Cormorant Garamond', Georgia, serif;
+    --sans:         'Jost', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--white);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--off-white); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5vw;
+    height: 72px;
+    background: rgba(250,250,247,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(184,150,62,0.2);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 30px rgba(30,77,53,0.08); }
+
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--green-deep);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 3px;
+    transition: color 0.3s;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.35s ease;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    background: var(--green-deep);
+    color: var(--white) !important;
+    padding: 9px 22px !important;
+    border-radius: 2px;
+    font-size: 0.75rem !important;
+    transition: background 0.3s !important;
+  }
+  .nav-cta:hover { background: var(--gold) !important; color: var(--white) !important; }
+  .nav-cta::after { display: none !important; }
+
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: var(--green-deep); transition: all 0.3s; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background: linear-gradient(160deg, var(--green-deep) 0%, var(--green-mid) 55%, var(--green-light) 100%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 5vw;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-circles {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .hero-bg-circles::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(184,150,62,0.15);
+    top: -150px; right: -100px;
+  }
+  .hero-bg-circles::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.08);
+    bottom: -100px; left: 10%;
+  }
+
+  .hero-text { padding-top: 80px; }
+
+  .hero-eyebrow {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.05;
+    margin-bottom: 1.8rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.75);
+    font-weight: 300;
+    line-height: 1.8;
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-btns {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--white);
+    padding: 14px 32px;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border: none; cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    padding: 13px 32px;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.4);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .btn-outline:hover { border-color: var(--gold-light); background: rgba(184,150,62,0.1); }
+
+  .hero-visual {
+    display: flex; justify-content: center; align-items: center;
+    position: relative;
+    opacity: 0;
+    animation: fadeIn 1.2s 0.5s forwards;
+  }
+
+  .hero-circle-main {
+    width: 420px; height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.12), rgba(255,255,255,0.02));
+    border: 1px solid rgba(184,150,62,0.3);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+
+  .hero-circle-inner {
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 30%, rgba(184,150,62,0.2), rgba(30,77,53,0.4));
+    border: 1px solid rgba(184,150,62,0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .hero-circle-text {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--gold-light);
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .hero-float-tag {
+    position: absolute;
+    background: var(--white);
+    padding: 12px 18px;
+    border-left: 3px solid var(--gold);
+    font-size: 0.75rem;
+    color: var(--green-deep);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    animation: float 4s ease-in-out infinite;
+  }
+  .hero-float-tag:nth-child(2) { top: 60px; right: -20px; animation-delay: 0s; }
+  .hero-float-tag:nth-child(3) { bottom: 80px; left: -30px; animation-delay: 1.5s; }
+
+  /* ── MARQUEE ── */
+  .marquee-wrapper {
+    background: var(--green-deep);
+    padding: 14px 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(184,150,62,0.3);
+    border-bottom: 1px solid rgba(184,150,62,0.3);
+  }
+  .marquee-track {
+    display: flex;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+  }
+  .marquee-item {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    padding: 0 3rem;
+    flex-shrink: 0;
+  }
+  .marquee-item span { color: var(--gold-light); margin: 0 0.5rem; }
+
+  /* ── SECTIONS COMMON ── */
+  section { padding: 100px 5vw; }
+
+  .section-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+    font-weight: 500;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    color: var(--green-deep);
+    line-height: 1.15;
+    margin-bottom: 1.2rem;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-body {
+    font-size: 0.95rem;
+    color: var(--gray);
+    line-height: 1.85;
+    max-width: 560px;
+  }
+
+  /* ── SOBRE ── */
+  #sobre {
+    background: var(--off-white);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6vw;
+    align-items: center;
+  }
+
+  .sobre-visual {
+    position: relative;
+  }
+
+  .sobre-card {
+    background: var(--green-deep);
+    padding: 3rem;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .sobre-card::before {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 1px solid rgba(184,150,62,0.2);
+    top: -60px; right: -60px;
+  }
+
+  .sobre-card-quote {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+  .sobre-card-text {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.8;
+  }
+
+  .sobre-stats {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(184,150,62,0.2);
+    margin-top: 1px;
+  }
+  .stat-box {
+    background: var(--off-white);
+    padding: 1.8rem;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--green-deep);
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-top: 0.3rem;
+  }
+
+  .sobre-text .section-body { max-width: 100%; }
+
+  .valores-list {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .valor-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .valor-icon {
+    width: 36px; height: 36px;
+    background: var(--green-pale);
+    border-left: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.9rem;
+    color: var(--green-mid);
+  }
+  .valor-text strong {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--green-deep);
+    margin-bottom: 0.2rem;
+  }
+  .valor-text p {
+    font-size: 0.83rem;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* ── PRODUTOS ── */
+  #produtos { background: var(--white); }
+
+  .produtos-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .produtos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .produto-card {
+    background: var(--off-white);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .produto-card:hover { transform: translateY(-4px); }
+  .produto-card:hover .produto-overlay { opacity: 1; }
+  .produto-card:hover .produto-img-wrap { transform: scale(1.03); }
+
+  .produto-img-wrap {
+    height: 280px;
+    background: var(--green-pale);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.5s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Product color themes */
+  .produto-card:nth-child(1) .produto-img-wrap { background: linear-gradient(135deg, #e8f4ec, #d0e8d8); }
+  .produto-card:nth-child(2) .produto-img-wrap { background: linear-gradient(135deg, #f0ead8, #e8dcc4); }
+  .produto-card:nth-child(3) .produto-img-wrap { background: linear-gradient(135deg, #e8f0ec, #d4e8dc); }
+  .produto-card:nth-child(4) .produto-img-wrap { background: linear-gradient(135deg, #f0e8f4, #e4d8ed); }
+  .produto-card:nth-child(5) .produto-img-wrap { background: linear-gradient(135deg, #e4eef8, #d0e0f0); }
+
+  .produto-icon {
+    font-size: 4rem;
+    filter: drop-shadow(0 4px 16px rgba(0,0,0,0.1));
+  }
+
+  .produto-num {
+    position: absolute; top: 1rem; left: 1rem;
+    font-family: var(--serif);
+    font-size: 0.75rem;
+    color: var(--green-mid);
+    letter-spacing: 0.1em;
+    background: rgba(255,255,255,0.8);
+    padding: 4px 10px;
+  }
+
+  .produto-overlay {
+    position: absolute; inset: 0;
+    background: rgba(30,77,53,0.85);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    opacity: 0;
+    transition: opacity 0.35s;
+    padding: 2rem;
+    text-align: center;
+  }
+  .produto-overlay p {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+  .overlay-btn {
+    background: var(--gold);
+    color: var(--white);
+    padding: 9px 22px;
+    font-size: 0.73rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  .overlay-btn:hover { background: var(--gold-light); }
+
+  .produto-info {
+    padding: 1.5rem 1.8rem 1.8rem;
+  }
+  .produto-tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+  }
+  .produto-nome {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: var(--green-deep);
+    margin-bottom: 0.5rem;
+  }
+  .produto-desc {
+    font-size: 0.83rem;
+    color: var(--gray);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+  .produto-ativos {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+  .ativo-tag {
+    font-size: 0.68rem;
+    background: var(--green-pale);
+    color: var(--green-mid);
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-weight: 500;
+  }
+
+  /* ── ATIVOS SECTION ── */
+  #ativos {
+    background: var(--green-deep);
+    color: var(--white);
+  }
+  #ativos .section-title { color: var(--white); }
+  #ativos .section-eyebrow { color: var(--gold-light); }
+  #ativos .section-body { color: rgba(255,255,255,0.65); max-width: 100%; }
+
+  .ativos-header {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4vw; align-items: center;
+    margin-bottom: 4rem;
+  }
+
+  .ativos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(184,150,62,0.2);
+  }
+
+  .ativo-card {
+    background: rgba(255,255,255,0.04);
+    padding: 2rem;
+    transition: background 0.3s;
+    border-top: 2px solid transparent;
+  }
+  .ativo-card:hover {
+    background: rgba(255,255,255,0.07);
+    border-top-color: var(--gold);
+  }
+
+  .ativo-emoji { font-size: 1.8rem; margin-bottom: 1rem; display: block; }
+  .ativo-card-nome {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: var(--gold-light);
+    margin-bottom: 0.6rem;
+    font-weight: 400;
+  }
+  .ativo-card-desc {
+    font-size: 0.83rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.75;
+  }
+  .ativo-card-origem {
+    margin-top: 1rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+
+  /* ── INGREDIENTES ── */
+  #ingredientes { background: var(--gold-pale); }
+
+  .ingredientes-intro {
+    max-width: 700px; margin-bottom: 3rem;
+  }
+
+  .ingredientes-accordion {
+    max-width: 860px;
+  }
+
+  .acc-item {
+    border-bottom: 1px solid rgba(184,150,62,0.25);
+  }
+  .acc-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 0;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  .acc-header:hover .acc-title { color: var(--gold); }
+
+  .acc-title {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: var(--green-deep);
+    transition: color 0.3s;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .acc-num {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    font-family: var(--sans);
+    font-weight: 500;
+  }
+  .acc-arrow {
+    width: 28px; height: 28px;
+    border: 1px solid rgba(184,150,62,0.4);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold);
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: transform 0.3s, background 0.3s;
+  }
+  .acc-item.open .acc-arrow { transform: rotate(45deg); background: var(--gold); color: var(--white); }
+
+  .acc-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.45s ease;
+  }
+  .acc-item.open .acc-body { max-height: 800px; }
+
+  .acc-content {
+    padding: 0 0 1.5rem 0;
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .ing-item {
+    background: var(--white);
+    padding: 1rem 1.2rem;
+    border-left: 2px solid var(--green-pale);
+    transition: border-color 0.3s;
+  }
+  .ing-item:hover { border-left-color: var(--gold); }
+  .ing-nome {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--green-deep);
+    margin-bottom: 0.25rem;
+  }
+  .ing-funcao {
+    font-size: 0.78rem;
+    color: var(--gray);
+    line-height: 1.55;
+  }
+
+  /* ── FILOSOFIA ── */
+  #filosofia {
+    background: var(--off-white);
+    text-align: center;
+  }
+
+  .filosofia-inner { max-width: 800px; margin: 0 auto; }
+
+  .filosofia-quote {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    color: var(--green-deep);
+    line-height: 1.4;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding: 0 2rem;
+  }
+  .filosofia-quote::before, .filosofia-quote::after {
+    content: '"';
+    font-family: var(--serif);
+    font-size: 5rem;
+    color: var(--gold);
+    opacity: 0.3;
+    position: absolute;
+    line-height: 1;
+  }
+  .filosofia-quote::before { top: -1rem; left: -0.5rem; }
+  .filosofia-quote::after { content: '"'; bottom: -2.5rem; right: -0.5rem; }
+
+  .filosofia-sub {
+    font-size: 0.92rem;
+    color: var(--gray);
+    line-height: 1.9;
+    margin-top: 2rem;
+  }
+
+  .filosofia-pillars {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 4rem;
+    background: rgba(184,150,62,0.15);
+  }
+  .pilar {
+    background: var(--white);
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  .pilar-icon {
+    width: 52px; height: 52px;
+    margin: 0 auto 1.2rem;
+    background: var(--green-pale);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+  }
+  .pilar h3 {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--green-deep);
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  .pilar p {
+    font-size: 0.82rem;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+
+  /* ── NEWSLETTER / CONTACT ── */
+  #contato {
+    background: var(--green-deep);
+    color: var(--white);
+    text-align: center;
+  }
+  #contato .section-eyebrow { color: var(--gold-light); }
+  #contato .section-title { color: var(--white); text-align: center; }
+
+  .contato-inner { max-width: 600px; margin: 0 auto; }
+  .contato-desc {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+
+  .newsletter-form {
+    display: flex; gap: 0;
+    max-width: 500px; margin: 0 auto 2rem;
+  }
+  .newsletter-form input {
+    flex: 1;
+    padding: 14px 20px;
+    border: 1px solid rgba(184,150,62,0.4);
+    background: rgba(255,255,255,0.07);
+    color: var(--white);
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .newsletter-form input::placeholder { color: rgba(255,255,255,0.35); }
+  .newsletter-form input:focus { border-color: var(--gold); }
+  .newsletter-form button {
+    background: var(--gold);
+    color: var(--white);
+    padding: 14px 28px;
+    border: none;
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s;
+    white-space: nowrap;
+  }
+  .newsletter-form button:hover { background: var(--gold-light); }
+
+  .social-links {
+    display: flex; justify-content: center; gap: 1.2rem;
+    margin-top: 2rem;
+  }
+  .social-link {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(184,150,62,0.35);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+  }
+  .social-link:hover { border-color: var(--gold); color: var(--gold); background: rgba(184,150,62,0.1); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    padding: 3rem 5vw;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-logo {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    color: var(--white);
+    font-weight: 400;
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-text {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.05em;
+  }
+  .footer-line {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    #hero { grid-template-columns: 1fr; text-align: center; padding-top: 100px; }
+    .hero-sub { margin: 0 auto 2.5rem; }
+    .hero-btns { justify-content: center; }
+    .hero-visual { display: none; }
+    #sobre { grid-template-columns: 1fr; }
+    .ativos-header { grid-template-columns: 1fr; }
+    .produtos-grid { grid-template-columns: repeat(2, 1fr); }
+    .ativos-grid { grid-template-columns: repeat(2, 1fr); }
+    .acc-content { grid-template-columns: 1fr; }
+    .filosofia-pillars { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    nav .nav-cta { display: none; }
+  }
+  @media (max-width: 600px) {
+    .produtos-grid { grid-template-columns: 1fr; }
+    .ativos-grid { grid-template-columns: 1fr; }
+    .sobre-stats { grid-template-columns: 1fr 1fr; }
+    .newsletter-form { flex-direction: column; }
+    footer { flex-direction: column; text-align: center; }
+    .produtos-header { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* Mobile menu */
+  .mobile-menu {
+    display: none;
+    position: fixed; top: 72px; left: 0; right: 0;
+    background: var(--white);
+    padding: 1.5rem 5vw 2rem;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    z-index: 99;
+    flex-direction: column; gap: 1.2rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--off-white);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Ranzo <span>Cosmetics</span></a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#produtos">Produtos</a></li>
+    <li><a href="#ativos">Ativos</a></li>
+    <li><a href="#ingredientes">Ingredientes</a></li>
+    <li><a href="#filosofia">Filosofia</a></li>
+    <li><a href="#contato" class="nav-cta">Contato</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#sobre" onclick="toggleMenu()">Sobre</a>
+  <a href="#produtos" onclick="toggleMenu()">Produtos</a>
+  <a href="#ativos" onclick="toggleMenu()">Ativos</a>
+  <a href="#ingredientes" onclick="toggleMenu()">Ingredientes</a>
+  <a href="#filosofia" onclick="toggleMenu()">Filosofia</a>
+  <a href="#contato" onclick="toggleMenu()">Contato</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-circles"></div>
+  <div class="hero-text">
+    <p class="hero-eyebrow">✦ Fabricado no Brasil &nbsp;·&nbsp; Ingredientes com Propósito</p>
+    <h1 class="hero-title">Beleza que <em>nutre.</em><br>Ciência que<br>você entende.</h1>
+    <p class="hero-sub">Cada produto Ranzo foi pensado para que você saiba exatamente o que coloca na pele — e porquê. Ingredientes selecionados, formulações transparentes, resultados reais.</p>
+    <div class="hero-btns">
+      <a href="#produtos" class="btn-primary">Conhecer Produtos</a>
+      <a href="#sobre" class="btn-outline">Nossa História</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-circle-main">
+      <div class="hero-circle-inner">
+        <p class="hero-circle-text">Ingredientes com propósito.<br>Beleza com ciência.</p>
+      </div>
+      <div class="hero-float-tag">🌿 Fabricado no Brasil</div>
+      <div class="hero-float-tag">✦ 5 Produtos Exclusivos</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrapper">
+  <div class="marquee-track">
+    <span class="marquee-item">Gel de Banho <span>✦</span></span>
+    <span class="marquee-item">Creme Corporal <span>✦</span></span>
+    <span class="marquee-item">Esfoliante Corporal <span>✦</span></span>
+    <span class="marquee-item">Difusor de Ambiente <span>✦</span></span>
+    <span class="marquee-item">Creme de Massagem <span>✦</span></span>
+    <span class="marquee-item">Fabricado no Brasil <span>✦</span></span>
+    <span class="marquee-item">Ingredientes Selecionados <span>✦</span></span>
+    <span class="marquee-item">Ranzo Cosmetics <span>✦</span></span>
+    <span class="marquee-item">Gel de Banho <span>✦</span></span>
+    <span class="marquee-item">Creme Corporal <span>✦</span></span>
+    <span class="marquee-item">Esfoliante Corporal <span>✦</span></span>
+    <span class="marquee-item">Difusor de Ambiente <span>✦</span></span>
+    <span class="marquee-item">Creme de Massagem <span>✦</span></span>
+    <span class="marquee-item">Fabricado no Brasil <span>✦</span></span>
+    <span class="marquee-item">Ingredientes Selecionados <span>✦</span></span>
+    <span class="marquee-item">Ranzo Cosmetics <span>✦</span></span>
+  </div>
+</div>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="sobre-visual reveal">
+    <div class="sobre-card">
+      <p class="sobre-card-quote">"Acreditamos que cuidar da pele começa por entendê-la."</p>
+      <p class="sobre-card-text">A Ranzo Cosmetics nasceu de uma convicção simples: cosméticos de qualidade não precisam ser misteriosos. Cada escolha de ingrediente tem uma razão, e essa razão merece ser contada.</p>
+    </div>
+    <div class="sobre-stats">
+      <div class="stat-box">
+        <span class="stat-num">5</span>
+        <span class="stat-label">Produtos exclusivos</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">Fabricado no Brasil</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">3</span>
+        <span class="stat-label">Ativos amazônicos</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">0</span>
+        <span class="stat-label">Ingredientes sem propósito</span>
+      </div>
+    </div>
+  </div>
+  <div class="sobre-text reveal">
+    <p class="section-eyebrow">Nossa História</p>
+    <h2 class="section-title">Uma marca brasileira construída sobre <em>transparência</em></h2>
+    <p class="section-body">A Ranzo Cosmetics surge com uma missão clara: criar produtos de cuidado pessoal onde cada ingrediente tem um papel definido e uma história para contar. Nascemos no Brasil, com orgulho da nossa biodiversidade e dos ativos que só a natureza tropical pode oferecer.</p>
+    <div class="valores-list">
+      <div class="valor-item">
+        <div class="valor-icon">🌿</div>
+        <div class="valor-text">
+          <strong>Origem Consciente</strong>
+          <p>Ingredientes selecionados com critério, valorizando a flora brasileira e a ciência cosmética.</p>
+        </div>
+      </div>
+      <div class="valor-item">
+        <div class="valor-icon">🔬</div>
+        <div class="valor-text">
+          <strong>Formulação Transparente</strong>
+          <p>Explicamos cada ingrediente, sua função e o porquê da nossa escolha. Sem segredos.</p>
+        </div>
+      </div>
+      <div class="valor-item">
+        <div class="valor-icon">✦</div>
+        <div class="valor-text">
+          <strong>Qualidade Sem Compromisso</strong>
+          <p>Do desenvolvimento ao rótulo, cada detalhe é pensado para entregar o melhor à sua pele.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUTOS -->
+<section id="produtos">
+  <div class="produtos-header reveal">
+    <div>
+      <p class="section-eyebrow">Coleção 2025</p>
+      <h2 class="section-title">Cinco produtos.<br><em>Uma rotina completa.</em></h2>
+    </div>
+    <p style="font-size:0.88rem;color:var(--gray);max-width:320px;line-height:1.7;">Cada produto foi desenvolvido para funcionar individualmente ou em conjunto, criando uma rotina de cuidados completa e perfumada.</p>
+  </div>
+
+  <div class="produtos-grid">
+
+    <!-- 01 Gel de Banho -->
+    <div class="produto-card reveal">
+      <div class="produto-img-wrap">
+        <span class="produto-num">01</span>
+        <span class="produto-icon">🧴</span>
+        <div class="produto-overlay">
+          <p>Gel de textura suave que limpa sem agredir. Fórmula enriquecida com ativos antioxidantes e aminoácidos para uma pele nutrida já no banho.</p>
+          <a href="#ingredientes" class="overlay-btn">Ver Ingredientes</a>
+        </div>
+      </div>
+      <div class="produto-info">
+        <p class="produto-tag">Banho · Fragrância Manga e Toranja</p>
+        <h3 class="produto-nome">Gel de Banho</h3>
+        <p class="produto-desc">Limpeza suave com toque de frescor tropical. Indicado para uso diário, inclusive em peles sensíveis.</p>
+        <div class="produto-ativos">
+          <span class="ativo-tag">Extrato de Uva</span>
+          <span class="ativo-tag">Nutriamino CA</span>
+          <span class="ativo-tag">Óleo de Manga</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 Creme Corporal -->
+    <div class="produto-card reveal">
+      <div class="produto-img-wrap">
+        <span class="produto-num">02</span>
+        <span class="produto-icon">✨</span>
+        <div class="produto-overlay">
+          <p>Hidratação profunda com absorção rápida. A combinação de aminoácidos, Óleo de Manga e Aloe Vera entrega maciez duradoura sem sensação oleosa.</p>
+          <a href="#ingredientes" class="overlay-btn">Ver Ingredientes</a>
+        </div>
+      </div>
+      <div class="produto-info">
+        <p class="produto-tag">Corpo · Fragrância Manga e Toranja</p>
+        <h3 class="produto-nome">Creme Corporal</h3>
+        <p class="produto-desc">Hidratação intensa com textura aveludada. Absorção rápida e maciez de longa duração.</p>
+        <div class="produto-ativos">
+          <span class="ativo-tag">Extrato de Uva</span>
+          <span class="ativo-tag">Nutriamino CA</span>
+          <span class="ativo-tag">Óleo de Manga</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 Esfoliante -->
+    <div class="produto-card reveal">
+      <div class="produto-img-wrap">
+        <span class="produto-num">03</span>
+        <span class="produto-icon">🌿</span>
+        <div class="produto-overlay">
+          <p>Esfoliação suave que renova sem agredir. Manteiga de Karité e Óleo de Coco nutrem enquanto a cera sintética remove as células mortas com delicadeza.</p>
+          <a href="#ingredientes" class="overlay-btn">Ver Ingredientes</a>
+        </div>
+      </div>
+      <div class="produto-info">
+        <p class="produto-tag">Renovação · Fragrância Manga e Toranja</p>
+        <h3 class="produto-nome">Esfoliante Corporal</h3>
+        <p class="produto-desc">Renovação celular com suavidade. Pele mais lisa, luminosa e receptiva à hidratação.</p>
+        <div class="produto-ativos">
+          <span class="ativo-tag">Extrato de Uva</span>
+          <span class="ativo-tag">Óleo de Manga</span>
+          <span class="ativo-tag">Manteiga de Karité</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 Difusor -->
+    <div class="produto-card reveal">
+      <div class="produto-img-wrap">
+        <span class="produto-num">04</span>
+        <span class="produto-icon">🕯️</span>
+        <div class="produto-overlay">
+          <p>Fragrância sofisticada inspirada no Prada Candy. Notas de baunilha, almíscar e caramelo transformam qualquer espaço num refúgio elegante.</p>
+          <a href="#ingredientes" class="overlay-btn">Ver Ingredientes</a>
+        </div>
+      </div>
+      <div class="produto-info">
+        <p class="produto-tag">Ambiente · Inspiração Prada Candy</p>
+        <h3 class="produto-nome">Difusor de Ambiente</h3>
+        <p class="produto-desc">Sofisticação para o seu espaço. Fragrância envolvente de longa duração com dispersão uniforme.</p>
+        <div class="produto-ativos">
+          <span class="ativo-tag">Baunilha</span>
+          <span class="ativo-tag">Almíscar</span>
+          <span class="ativo-tag">Caramelo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 Creme de Massagem -->
+    <div class="produto-card reveal">
+      <div class="produto-img-wrap">
+        <span class="produto-num">05</span>
+        <span class="produto-icon">💆</span>
+        <div class="produto-overlay">
+          <p>Ativos amazônicos — Manteiga de Murumuru e Óleo de Buriti — combinados com Ácido Lático para uma massagem que nutre e renova ao mesmo tempo.</p>
+          <a href="#ingredientes" class="overlay-btn">Ver Ingredientes</a>
+        </div>
+      </div>
+      <div class="produto-info">
+        <p class="produto-tag">Massagem · Fragrância Framboesa</p>
+        <h3 class="produto-nome">Creme de Massagem</h3>
+        <p class="produto-desc">Relaxamento e cuidado profundo. Ativos da Amazónia brasileira em cada aplicação.</p>
+        <div class="produto-ativos">
+          <span class="ativo-tag">Manteiga de Murumuru</span>
+          <span class="ativo-tag">Óleo de Buriti</span>
+          <span class="ativo-tag">Ácido Lático</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ATIVOS -->
+<section id="ativos">
+  <div class="ativos-header">
+    <div class="reveal">
+      <p class="section-eyebrow">Ingredientes Ativos</p>
+      <h2 class="section-title">Os ativos que escolhemos — <em>e porquê</em></h2>
+    </div>
+    <p class="section-body reveal">Cada ativo nos nossos produtos foi selecionado com um propósito científico específico. Não adicionamos ingredientes por tendência ou aparência — cada um tem uma função comprovada na saúde da sua pele.</p>
+  </div>
+
+  <div class="ativos-grid">
+    <div class="ativo-card reveal">
+      <span class="ativo-emoji">🍇</span>
+      <h3 class="ativo-card-nome">Extrato de Uva</h3>
+      <p class="ativo-card-desc">Rico em resveratrol e polifenóis, neutraliza os radicais livres causados pela poluição e pelos raios UV. Protege as células cutâneas do envelhecimento precoce com uso contínuo.</p>
+      <p class="ativo-card-origem">Antioxidante · Antiage</p>
+    </div>
+    <div class="ativo-card reveal">
+      <span class="ativo-emoji">🧬</span>
+      <h3 class="ativo-card-nome">Nutriamino CA</h3>
+      <p class="ativo-card-desc">Complexo de aminoácidos que reforça a barreira cutânea, retém a umidade natural e estimula a regeneração celular. A pele fica mais forte e capaz de se auto-hidratar.</p>
+      <p class="ativo-card-origem">Fortalecedor · Hidratante</p>
+    </div>
+    <div class="ativo-card reveal">
+      <span class="ativo-emoji">🥭</span>
+      <h3 class="ativo-card-nome">Óleo de Manga</h3>
+      <p class="ativo-card-desc">Rico em vitaminas A, C e E e ácidos graxos. Alta afinidade com a pele humana — penetra sem deixar resíduo oleoso, nutrindo em profundidade e conferindo brilho natural.</p>
+      <p class="ativo-card-origem">Nutritivo · Emoliente</p>
+    </div>
+    <div class="ativo-card reveal">
+      <span class="ativo-emoji">🌴</span>
+      <h3 class="ativo-card-nome">Manteiga de Murumuru</h3>
+      <p class="ativo-card-desc">Da palmeira amazônica Astrocaryum murumuru. Rica em ácido láurico com alta afinidade com a queratina da pele. Hidrata profundamente e derrete ao toque corporal.</p>
+      <p class="ativo-card-origem">Amazônia Brasileira · Oclusivo</p>
+    </div>
+    <div class="ativo-card reveal">
+      <span class="ativo-emoji">🧡</span>
+      <h3 class="ativo-card-nome">Óleo de Buriti</h3>
+      <p class="ativo-card-desc">Chamado de "árvore da vida" pelos povos indígenas. O óleo com maior concentração natural de betacaroteno (pró-vitamina A). Ilumina, regenera e protege a pele.</p>
+      <p class="ativo-card-origem">Amazônia Brasileira · Regenerador</p>
+    </div>
+    <div class="ativo-card reveal">
+      <span class="ativo-emoji">⚗️</span>
+      <h3 class="ativo-card-nome">Ácido Lático</h3>
+      <p class="ativo-card-desc">AHA de origem natural com o menor poder irritante da família. Dissolve as ligações entre células mortas, promovendo renovação suave. Melhora textura, tom e estimula colágeno.</p>
+      <p class="ativo-card-origem">Esfoliante Químico · Renovador</p>
+    </div>
+  </div>
+</section>
+
+<!-- INGREDIENTES ACCORDION -->
+<section id="ingredientes">
+  <div class="ingredientes-intro reveal">
+    <p class="section-eyebrow">Composição Detalhada</p>
+    <h2 class="section-title">O que está dentro <em>de cada produto</em></h2>
+    <p class="section-body">Transparência total. Aqui explicamos a função de cada ingrediente em cada produto — porque acreditamos que você merece saber o que coloca na pele.</p>
+  </div>
+
+  <div class="ingredientes-accordion reveal">
+
+    <!-- GEL DE BANHO -->
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-title">
+          <span class="acc-num">01</span>
+          Gel de Banho — Composição Explicada
+        </div>
+        <div class="acc-arrow">+</div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-content">
+          <div class="ing-item">
+            <div class="ing-nome">Sodium Laureth Sulfate (SLES)</div>
+            <div class="ing-funcao">Agente de limpeza suave. A versão Éter é mais gentil que o SLS tradicional, gera espuma delicada e remove impurezas sem agredir a pele.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Cocamidopropyl Betaine</div>
+            <div class="ing-funcao">Derivado do coco. Surfactante suave que potencializa a espuma e condiciona a pele ao mesmo tempo — reduz o ressecamento pós-banho.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Glycerin (Glicerina Bidestilada)</div>
+            <div class="ing-funcao">Um dos melhores umectantes conhecidos. Atrai moléculas de água para dentro da pele, mantendo-a hidratada mesmo após o enxágue.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Hydroxyethylcellulose</div>
+            <div class="ing-funcao">Espessante natural derivado de celulose vegetal. Dá ao gel a textura encorpada e garante deslizamento suave sem escorrer.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Phenoxyethanol</div>
+            <div class="ing-funcao">Conservante aprovado pelas principais agências reguladoras (ANVISA, UE). Garante segurança microbiológica do produto sem irritar a pele.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CREME CORPORAL -->
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-title">
+          <span class="acc-num">02</span>
+          Creme Corporal — Composição Explicada
+        </div>
+        <div class="acc-arrow">+</div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-content">
+          <div class="ing-item">
+            <div class="ing-nome">Cetearyl Alcohol + Ceteareth-20</div>
+            <div class="ing-funcao">Emulsificantes que unem a fase aquosa e oleosa. São álcoois graxos — não ressecam, pelo contrário, contribuem para a textura cremosa e macia.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Glyceryl Stearate</div>
+            <div class="ing-funcao">Cria um filme protetor na pele que reduz a perda de água (TEWL), selando a hidratação por horas após a aplicação.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Caprylic/Capric Triglyceride</div>
+            <div class="ing-funcao">Derivado do coco, ultra leve. Responsável pela leveza do creme — penetra rapidamente e transporta os ativos para dentro da pele.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Cyclopentasiloxane</div>
+            <div class="ing-funcao">Silicone leve que confere textura sedosa. Distribui os ingredientes uniformemente e cria o toque aveludado característico do produto.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Aloe Barbadensis Extract</div>
+            <div class="ing-funcao">Aloe Vera. Umectante, calmante e anti-inflamatório natural. Rico em polissacarídeos que retêm água na pele e vitaminas B, C e E.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Sodium PCA</div>
+            <div class="ing-funcao">Componente do fator de hidratação natural da pele (NMF). Potente umectante que atrai e retém moléculas de água por horas.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ESFOLIANTE -->
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-title">
+          <span class="acc-num">03</span>
+          Esfoliante Corporal — Composição Explicada
+        </div>
+        <div class="acc-arrow">+</div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-content">
+          <div class="ing-item">
+            <div class="ing-nome">Synthetic Wax (Cera Sintética)</div>
+            <div class="ing-funcao">O agente esfoliante. Ao contrário de microplásticos ou partículas minerais agressivas, oferece esfoliação suave e controlada sem risco de micro-lacerações.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Cocos Nucifera Oil (Óleo de Coco)</div>
+            <div class="ing-funcao">Rico em ácido láurico com propriedades antimicrobianas. Hidrata profundamente e dá o deslizamento suave que protege a pele durante a esfoliação.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Butyrospermum Parkii (Manteiga de Karité)</div>
+            <div class="ing-funcao">Uma das manteigas vegetais mais completas. Rica em ácidos graxos e vitaminas A e E. Nutre, regenera e protege a nova camada de pele exposta.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">BHT + Disodium EDTA</div>
+            <div class="ing-funcao">Antioxidantes que protegem os óleos naturais da fórmula da oxidação, garantindo eficácia e segurança do primeiro ao último uso.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CREME MASSAGEM -->
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-title">
+          <span class="acc-num">05</span>
+          Creme de Massagem — Composição Explicada
+        </div>
+        <div class="acc-arrow">+</div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-content">
+          <div class="ing-item">
+            <div class="ing-nome">Camphor (Cânfora)</div>
+            <div class="ing-funcao">Promove vasodilatação local, aumentando a circulação sanguínea. Potencializa a massagem e melhora o transporte dos ativos para os tecidos.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Methyl Salicylate</div>
+            <div class="ing-funcao">Derivado natural da gaultéria. Ação anti-inflamatória tópica suave. Penetra através da pele aliviando desconfortos musculares e tensão acumulada.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Menthol</div>
+            <div class="ing-funcao">Ativa os receptores de frio (TRPM8) sem alterar a temperatura real. Sensação refrescante, ação analgésica suave e vasodilatadora.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Lanolin (Lanolina)</div>
+            <div class="ing-funcao">Emoliente mais próximo ao sebo humano. Alta capacidade oclusiva, reduz a perda de água e proporciona o deslizamento luxuoso característico da massagem.</div>
+          </div>
+          <div class="ing-item">
+            <div class="ing-nome">Aloe Barbadensis Leaf Extract</div>
+            <div class="ing-funcao">Acalma a pele durante a manipulação, reduz vermelhidão e hidrata em profundidade. Equilíbrio perfeito para os ingredientes mais ativos da fórmula.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FILOSOFIA -->
+<section id="filosofia">
+  <div class="filosofia-inner">
+    <div class="reveal">
+      <p class="section-eyebrow" style="text-align:center;">Nossa Filosofia</p>
+      <blockquote class="filosofia-quote">
+        Cosméticos de qualidade não precisam ser misteriosos.
+      </blockquote>
+      <p class="filosofia-sub">Na Ranzo Cosmetics, acreditamos que a beleza verdadeira começa pela compreensão. Quando você sabe o que está dentro de um produto — e por que cada ingrediente foi escolhido — a sua rotina de cuidados transforma-se numa experiência consciente e poderosa.</p>
+    </div>
+
+    <div class="filosofia-pillars reveal">
+      <div class="pilar">
+        <div class="pilar-icon">🌱</div>
+        <h3>Origem com Propósito</h3>
+        <p>Valorizamos a biodiversidade brasileira e escolhemos ingredientes que têm uma história e uma razão de existir na fórmula.</p>
+      </div>
+      <div class="pilar">
+        <div class="pilar-icon">🔍</div>
+        <h3>Transparência Total</h3>
+        <p>Explicamos cada ingrediente, sua função e o porquê da nossa escolha. Você merece saber o que coloca na pele.</p>
+      </div>
+      <div class="pilar">
+        <div class="pilar-icon">💛</div>
+        <h3>Feito com Afeto</h3>
+        <p>Cada produto Ranzo é desenvolvido com cuidado artesanal e rigor científico — porque qualidade e carinho não são opostos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="contato-inner reveal">
+    <p class="section-eyebrow">Fique por Dentro</p>
+    <h2 class="section-title">Seja a primeira a saber<br><em>quando chegamos</em></h2>
+    <p class="contato-desc">Os nossos produtos estão em fase final de desenvolvimento. Deixe o seu email para receber novidades, lançamentos e conteúdo exclusivo sobre os nossos ingredientes.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="O seu melhor email" id="emailInput">
+      <button onclick="subscribeNewsletter()">Quero Saber</button>
+    </div>
+    <p id="form-msg" style="font-size:0.8rem;color:var(--gold-light);min-height:1.2em;"></p>
+    <div class="social-links">
+      <a href="#" class="social-link" title="Instagram">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="#" class="social-link" title="Facebook">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="mailto:contato@ranzocosmeticos.com" class="social-link" title="Email">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Ranzo <span>Cosmetics</span></div>
+  <div class="footer-text">© 2025 Ranzo Cosmetics · Fabricado no Brasil</div>
+  <div class="footer-line">Beleza com Propósito</div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Mobile menu
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  // Accordion
+  function toggleAcc(header) {
+    const item = header.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.acc-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Newsletter
+  function subscribeNewsletter() {
+    const email = document.getElementById('emailInput').value;
+    const msg = document.getElementById('form-msg');
+    if (!email || !email.includes('@')) {
+      msg.textContent = 'Por favor, insira um email válido.';
+      msg.style.color = '#ff9999';
+      return;
+    }
+    msg.textContent = '✦ Obrigada! Vai ser a primeira a saber quando chegamos.';
+    msg.style.color = 'var(--gold-light)';
+    document.getElementById('emailInput').value = '';
+  }
+
+  // Enter key on newsletter
+  document.getElementById('emailInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') subscribeNewsletter();
+  });
+</script>
+</body>
+</html>
